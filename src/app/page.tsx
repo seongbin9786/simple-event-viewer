@@ -89,24 +89,24 @@ export default function EventViewerPage() {
       }
       dateRangePicker={"(dateRangePicker)"}
       eventTable={
-        <EventTable
-          eventList={
-            isEventsLoaded
-              ? {
-                  project: selectedProject,
-                  events: listEventsResponse.events,
-                  totalEvents: listEventsResponse.totalSize,
-                  pageSize: EVENTS_PAGE_SIZE,
-                  currentPage,
-                  hasNextPage: currentPage < totalEventPages,
-                  goToPrevPage: () =>
-                    setCurrentPage(Math.max(currentPage - 1, 1)),
-                  goToNextPage: () =>
-                    setCurrentPage(Math.min(currentPage + 1, totalEventPages)),
-                }
-              : undefined
-          }
-        />
+        isEventsLoaded ? (
+          <EventTable
+            eventList={{
+              project: selectedProject,
+              events: listEventsResponse.events,
+              paginationMetadata: {
+                totalEvents: listEventsResponse.totalSize,
+                pageSize: EVENTS_PAGE_SIZE,
+                currentPage,
+                hasNextPage: currentPage < totalEventPages,
+                goToPrevPage: () =>
+                  setCurrentPage(Math.max(currentPage - 1, 1)),
+                goToNextPage: () =>
+                  setCurrentPage(Math.min(currentPage + 1, totalEventPages)),
+              },
+            }}
+          />
+        ) : null
       }
     />
   );

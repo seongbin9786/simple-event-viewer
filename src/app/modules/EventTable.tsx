@@ -7,32 +7,37 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
-import { EventTableEmpty } from "./EventTableEmpty";
 import { PaginatedEventList } from "./PaginatedEventList";
+import { Pagination } from "./Pagination";
+
+const formatDate = (
+  timestamp: bigint | undefined,
+  timeZone: string | undefined,
+) => {
+  if (!timestamp || !timeZone) {
+    return "-";
+  }
+  return new Date(Number(timestamp) * 1000).toLocaleString("en-US", {
+    month: "short",
+    day: "numeric",
+    year: "numeric",
+    hour: "numeric",
+    minute: "2-digit",
+    hour12: true,
+    timeZone,
+  });
+};
 
 interface EventTableProps {
-  eventList?: PaginatedEventList;
+  eventList: PaginatedEventList;
 }
 
-export const EventTable = ({ eventList }: EventTableProps) => {
-  if (!eventList) {
-    return <EventTableEmpty />;
-  }
-
-  const {
-    project,
-    events,
-    totalEvents,
-    pageSize,
-    currentPage,
-    hasNextPage,
-    goToPrevPage,
-    goToNextPage,
-  } = eventList;
-
+export const EventTable = ({
+  eventList: { project, events, paginationMetadata },
+}: EventTableProps) => {
   return (
     <div className="flex flex-col gap-4">
-      <div>{totalEvents} events</div>
+      <div>{paginationMetadata.totalEvents} events</div>
       <Table>
         <TableHeader>
           <TableRow>
@@ -47,39 +52,13 @@ export const EventTable = ({ eventList }: EventTableProps) => {
               <TableCell className="text-center">{event.id}</TableCell>
               <TableCell className="text-center">{event.type}</TableCell>
               <TableCell className="text-center">
-                {new Date(
-                  Number(event.createTime?.seconds) * 1000,
-                ).toLocaleString("en-US", {
-                  month: "short",
-                  day: "numeric",
-                  year: "numeric",
-                  hour: "numeric",
-                  minute: "2-digit",
-                  hour12: true,
-                  timeZone: project?.timeZone?.id,
-                })}
+                {formatDate(event.createTime?.seconds, project?.timeZone?.id)}
               </TableCell>
             </TableRow>
           ))}
         </TableBody>
       </Table>
-      <div className="flex justify-center gap-4">
-        <div>{`${Math.max(0, pageSize * (currentPage - 1)) + 1} - ${Math.min(pageSize * currentPage, totalEvents)} of ${totalEvents}`}</div>
-        <button
-          onClick={goToPrevPage}
-          disabled={currentPage === 1}
-          className="select-none rounded-lg text-gray-900 disabled:text-gray-300"
-        >
-          {`<`}
-        </button>
-        <button
-          onClick={goToNextPage}
-          disabled={!hasNextPage}
-          className="select-none rounded-lg text-gray-900 disabled:text-gray-300"
-        >
-          {`>`}
-        </button>
-      </div>
+      <Pagination paginationMetadata={paginationMetadata} />
     </div>
   );
 };

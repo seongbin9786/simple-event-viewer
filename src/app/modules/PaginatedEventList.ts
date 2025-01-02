@@ -3,13 +3,17 @@ import {
   Project,
 } from "@buf/alignai_frontend-challenge-datetz.bufbuild_es/event/v1/event_pb";
 
-export interface PaginatedEventList {
-  project: Project;
-  events: Event[];
+export interface PaginationMetadata {
   totalEvents: number;
   pageSize: number;
   currentPage: number;
   hasNextPage: boolean;
   goToPrevPage: () => void;
   goToNextPage: () => void;
+}
+
+export interface PaginatedEventList {
+  project: Project;
+  events: Event[];
+  paginationMetadata: PaginationMetadata;
 }
