@@ -1,0 +1,15 @@
+{
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true,
+  "importOrder": [
+    "^(react/(.*)$)|^(react$)",
+    "<THIRD_PARTY_MODULES>",
+    "^(@/(.*)$)",
+    "^[./]"
+  ],
+  "tailwindFunctions": ["clsx", "cn", "twmerge", "cva"],
+  "plugins": [
+    "@trivago/prettier-plugin-sort-imports",
+    "prettier-plugin-tailwindcss"
+  ]
+}
