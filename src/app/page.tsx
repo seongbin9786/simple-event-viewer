@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 
+import { Project } from "@buf/alignai_frontend-challenge-datetz.bufbuild_es/event/v1/event_pb";
 import { EventService } from "@buf/alignai_frontend-challenge-datetz.connectrpc_es/event/v1/event_connect";
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
@@ -18,9 +19,9 @@ const transport = createConnectTransport({
 const client = createClient(EventService, transport);
 
 export default function EventViewerPage() {
-  const [selectedProjectId, setSelectedProjectId] = useState<
-    string | undefined
-  >(undefined);
+  const [selectedProject, setSelectedProject] = useState<Project | undefined>(
+    undefined,
+  );
 
   const { data: projects, isLoading: isProjectLoading } = useFetch({
     fetchFn: async () => {
@@ -30,23 +31,38 @@ export default function EventViewerPage() {
     deps: [],
   });
 
+  const { data: listEventsResponse } = useFetch({
+    enabled: !!selectedProject,
+    fetchFn: () =>
+      client.listEvents({
+        projectId: selectedProject?.id,
+      }),
+    deps: [selectedProject],
+  });
+
   if (isProjectLoading) {
     return <div>Loading...</div>;
   }
 
   console.log("projects:", projects);
+  console.log("projects:", listEventsResponse);
 
   return (
     <EventViewerLayout
       projectSelect={
         <ProjectSelect
           projectList={projects}
-          selectedProjectId={selectedProjectId}
-          onSelect={setSelectedProjectId}
+          selectedProject={selectedProject}
+          onSelect={setSelectedProject}
         />
       }
       dateRangePicker={"(dateRangePicker)"}
-      eventTable={<EventTable />}
+      eventTable={
+        <EventTable
+          events={listEventsResponse}
+          selectedProject={selectedProject}
+        />
+      }
     />
   );
 }

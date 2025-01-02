@@ -10,17 +10,25 @@ import {
 
 interface ProjectSelectProps {
   projectList: Project[];
-  selectedProjectId: string | undefined;
-  onSelect: (projectId: string) => void;
+  selectedProject?: Project;
+  onSelect: (project: Project) => void;
 }
 
 export const ProjectSelect = ({
   projectList,
-  selectedProjectId,
+  selectedProject,
   onSelect,
 }: ProjectSelectProps) => {
   return (
-    <Select value={selectedProjectId} onValueChange={onSelect}>
+    <Select
+      value={selectedProject?.id}
+      onValueChange={(projectId) => {
+        const nextselectedProject = projectList.find(
+          (project) => project.id === projectId,
+        )!;
+        onSelect(nextselectedProject);
+      }}
+    >
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="프로젝트를 선택해주세요..." />
       </SelectTrigger>
