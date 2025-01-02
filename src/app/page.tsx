@@ -41,8 +41,6 @@ export default function EventViewerPage() {
 
   useEffect(() => {
     setCurrentPage(1);
-    resetEventsFetch();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [selectedProject]);
 
   const {
@@ -50,7 +48,6 @@ export default function EventViewerPage() {
     isLoading: isEventsLoading,
     isEnabled: isEventsEnabled,
     totalPages: totalEventPages,
-    reset: resetEventsFetch,
   } = useTokenPaginatedFetch({
     enabled: !!selectedProject,
     pageSize: EVENTS_PAGE_SIZE,
@@ -72,6 +69,7 @@ export default function EventViewerPage() {
       };
     },
     deps: [],
+    resetDeps: [selectedProject],
   });
 
   if (!isProjectEnabled || isProjectLoading) {

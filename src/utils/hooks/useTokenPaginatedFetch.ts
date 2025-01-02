@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 export interface PaginatedResult<ResultType> {
   data: ResultType;
@@ -21,6 +21,7 @@ interface FetchProps<ResultType> {
   currentPage: number;
   fetchFn: (nextPageToken: string) => Promise<PaginatedResultType<ResultType>>;
   deps?: unknown[];
+  resetDeps?: unknown[];
 }
 
 export const useTokenPaginatedFetch = <ResultType>({
@@ -30,6 +31,7 @@ export const useTokenPaginatedFetch = <ResultType>({
   currentPage,
   fetchFn,
   deps = [],
+  resetDeps = [],
 }: FetchProps<ResultType>): PaginatedResult<ResultType> => {
   // TODO: page 별 데이터로 보관해 cache 기능 제공
   const [fetchResult, setFetchResult] = useState<ResultType | undefined>(
@@ -39,30 +41,33 @@ export const useTokenPaginatedFetch = <ResultType>({
   const [totalPages, setTotalPages] = useState(0);
   const [visitedPage, setVisitedPage] = useState(0);
   const [pageTokens, setPageTokens] = useState([""]);
+  const [needsRefetch, setNeedsRefetch] = useState(false);
 
-  const reset = () => {
+  const reset = useCallback(() => {
     setFetchResult(undefined);
     setError(undefined);
     setVisitedPage(0);
     setTotalPages(0);
     setPageTokens([""]);
-  };
+    setNeedsRefetch(true);
+  }, []);
 
-  // pageSize 변경 시 초기화 필요
   useEffect(() => {
     reset();
-  }, [pageSize]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [...resetDeps]);
 
   useEffect(() => {
     if (!enabled) {
       return;
     }
-
     if (currentPage > visitedPage + 1) {
       throw new Error("다음 페이지는 선형적으로만 방문 가능합니다.");
     }
-
-    (async function () {
+    if (needsRefetch) {
+      setNeedsRefetch(false);
+    }
+    (async () => {
       try {
         const { data, totalLength, pageToken } = await fetchFn(
           pageTokens[currentPage - 1],
@@ -79,7 +84,7 @@ export const useTokenPaginatedFetch = <ResultType>({
       }
     })();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [enabled, pageSize, currentPage, ...deps]);
+  }, [enabled, pageSize, currentPage, needsRefetch, ...deps]);
 
   if (error) {
     throw error;
