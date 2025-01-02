@@ -9,7 +9,13 @@ import { createConnectTransport } from "@connectrpc/connect-web";
 
 import { useFetch, useTokenPaginatedFetch } from "@/utils/hooks";
 
-import { EventTable, EventViewerLayout, ProjectSelect } from "./modules";
+import {
+  DateFilter,
+  DateStringPair,
+  EventTable,
+  EventViewerLayout,
+  ProjectSelect,
+} from "./modules";
 
 const transport = createConnectTransport({
   baseUrl:
@@ -24,6 +30,12 @@ export default function EventViewerPage() {
   const [selectedProject, setSelectedProject] = useState<Project | undefined>(
     undefined,
   );
+
+  const [dateRangeFilter, setDateRangeFilter] = useState<
+    DateStringPair | undefined
+  >(undefined);
+
+  console.log(dateRangeFilter);
 
   const {
     data: projects,
@@ -52,23 +64,24 @@ export default function EventViewerPage() {
     enabled: !!selectedProject,
     pageSize: EVENTS_PAGE_SIZE,
     currentPage,
-    fetchFn: async (nextPageToken) => {
-      const response = await client.listEvents({
+    fetchFn: async (pageToken) => {
+      const { events, totalSize, nextPageToken } = await client.listEvents({
         projectId: selectedProject?.id,
-        pageToken: nextPageToken,
+        filter:
+          dateRangeFilter &&
+          `create_time >= "${dateRangeFilter.from}" AND create_time < "${dateRangeFilter.to}"`,
+        pageToken: pageToken,
       });
-
-      const { events, totalSize } = response;
       return {
         data: {
           events,
           totalSize,
         },
-        totalLength: response.totalSize,
-        pageToken: response.nextPageToken,
+        totalLength: totalSize,
+        pageToken: nextPageToken,
       };
     },
-    deps: [],
+    deps: [dateRangeFilter],
     resetDeps: [selectedProject],
   });
 
@@ -87,7 +100,12 @@ export default function EventViewerPage() {
           onSelect={setSelectedProject}
         />
       }
-      dateRangePicker={"(dateRangePicker)"}
+      dateRangePicker={
+        <DateFilter
+          timeZone={selectedProject?.timeZone?.id}
+          setDateRangeFilter={setDateRangeFilter}
+        />
+      }
       eventTable={
         isEventsLoaded ? (
           <EventTable

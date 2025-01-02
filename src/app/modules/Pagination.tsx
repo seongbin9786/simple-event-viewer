@@ -1,4 +1,4 @@
-import { PaginationMetadata } from "./PaginatedEventList";
+import { PaginationMetadata } from "./PaginationMetadata";
 
 interface PaginationProps {
   paginationMetadata: PaginationMetadata;
