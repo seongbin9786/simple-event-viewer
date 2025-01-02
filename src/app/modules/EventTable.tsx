@@ -7,14 +7,19 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import { EventTableEmpty } from "./EventTableEmpty";
 import { PaginatedEventList } from "./PaginatedEventList";
 
 interface EventTableProps {
-  eventList: PaginatedEventList;
+  eventList?: PaginatedEventList;
 }
 
-export const EventTable = ({
-  eventList: {
+export const EventTable = ({ eventList }: EventTableProps) => {
+  if (!eventList) {
+    return <EventTableEmpty />;
+  }
+
+  const {
     project,
     events,
     totalEvents,
@@ -23,8 +28,8 @@ export const EventTable = ({
     hasNextPage,
     goToPrevPage,
     goToNextPage,
-  },
-}: EventTableProps) => {
+  } = eventList;
+
   return (
     <div className="flex flex-col gap-4">
       <div>{totalEvents} events</div>
