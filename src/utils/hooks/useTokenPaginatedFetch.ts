@@ -5,6 +5,7 @@ export interface PaginatedResult<ResultType> {
   isLoading: boolean;
   isEnabled: boolean;
   totalPages: number;
+  reset: () => void;
 }
 
 type PaginatedResultType<ResultType> = {
@@ -22,11 +23,6 @@ interface FetchProps<ResultType> {
   deps?: unknown[];
 }
 
-/*
-- currentPage가 올라가면 기존에 저장해둔 nextPageToken을 사용
-- currentPage가 내려가면 기존에 저장해둔 previousPageToken을 사용
-- 이렇게 되면, 탐색했던 페이지라는 개념이 필요함
-*/
 export const useTokenPaginatedFetch = <ResultType>({
   enabled = true,
   initialData = undefined,
@@ -35,24 +31,26 @@ export const useTokenPaginatedFetch = <ResultType>({
   fetchFn,
   deps = [],
 }: FetchProps<ResultType>): PaginatedResult<ResultType> => {
-  // currentPage에 대한 데이터만 보관.
   // TODO: page 별 데이터로 보관해 cache 기능 제공
   const [fetchResult, setFetchResult] = useState<ResultType | undefined>(
     initialData,
   );
   const [error, setError] = useState<unknown | undefined>(undefined);
   const [totalPages, setTotalPages] = useState(0);
-  const [visitedPage, setVisitedPage] = useState(1);
+  const [visitedPage, setVisitedPage] = useState(0);
   const [pageTokens, setPageTokens] = useState([""]);
 
-  console.log("[pag] pageTokens:", pageTokens);
-  console.log("[pag] visitedPage:", visitedPage);
+  const reset = () => {
+    setFetchResult(undefined);
+    setError(undefined);
+    setVisitedPage(0);
+    setTotalPages(0);
+    setPageTokens([""]);
+  };
 
   // pageSize 변경 시 초기화 필요
   useEffect(() => {
-    setError(undefined);
-    setVisitedPage(1);
-    setPageTokens([""]);
+    reset();
   }, [pageSize]);
 
   useEffect(() => {
@@ -93,6 +91,7 @@ export const useTokenPaginatedFetch = <ResultType>({
       isLoading: false,
       isEnabled: false,
       totalPages: 0,
+      reset,
     } as PaginatedResult<ResultType>;
   }
 
@@ -102,11 +101,13 @@ export const useTokenPaginatedFetch = <ResultType>({
         isLoading: true,
         isEnabled: true,
         totalPages,
+        reset,
       } as PaginatedResult<ResultType>)
     : ({
         data: fetchResult,
         isLoading: false,
         isEnabled: true,
         totalPages,
+        reset,
       } as PaginatedResult<ResultType>);
 };
