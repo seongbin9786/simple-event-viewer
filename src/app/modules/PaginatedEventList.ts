@@ -6,6 +6,7 @@ import {
 export interface PaginatedEventList {
   project: Project;
   events: Event[];
+  totalEvents: number;
   pageSize: number;
   currentPage: number;
   hasNextPage: boolean;

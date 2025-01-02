@@ -98,6 +98,7 @@ export default function EventViewerPage() {
   const paginatedEventList: PaginatedEventList = {
     project: selectedProject,
     events: listEventsResponse.events,
+    totalEvents: listEventsResponse.totalSize,
     pageSize: EVENTS_PAGE_SIZE,
     currentPage,
     hasNextPage: currentPage < totalEventPages,
