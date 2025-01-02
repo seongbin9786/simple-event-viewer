@@ -8,7 +8,7 @@ import { createConnectTransport } from "@connectrpc/connect-web";
 
 import { useFetch } from "@/utils/hooks";
 
-import { EventTable, EventViewerLayout } from "./modules";
+import { EventTable, EventViewerLayout, ProjectSelect } from "./modules";
 
 const transport = createConnectTransport({
   baseUrl:
@@ -21,10 +21,6 @@ export default function EventViewerPage() {
   const [selectedProjectId, setSelectedProjectId] = useState<
     string | undefined
   >(undefined);
-  const selectProjectById = (projectId: string) => {
-    console.log("selected projectId:", projectId);
-    setSelectedProjectId(projectId);
-  };
 
   const { data: projects, isLoading: isProjectLoading } = useFetch({
     fetchFn: async () => {
@@ -42,7 +38,13 @@ export default function EventViewerPage() {
 
   return (
     <EventViewerLayout
-      projectSelect={"(Select)"}
+      projectSelect={
+        <ProjectSelect
+          projectList={projects}
+          selectedProjectId={selectedProjectId}
+          onSelect={setSelectedProjectId}
+        />
+      }
       dateRangePicker={"(dateRangePicker)"}
       eventTable={<EventTable />}
     />
