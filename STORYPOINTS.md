@@ -12,8 +12,8 @@
 | .                                                      |                |                |           |
 | ConnectRPC 사용 방법 이해                              | -              | 2h             | O         |
 | Payload 사용 방법 확인                                 | -              | 1h             | O         |
-| Next, Tailwind, shadcn 프로젝트 세팅                   | 30m            |                |           |
-| 기본 UI 레이아웃                                       | 10m            |                |           |
+| Next, Tailwind, shadcn 프로젝트 세팅                   | 30m            | 30m            | O         |
+| 기본 UI 레이아웃                                       | 10m            | 5m             | O         |
 | .                                                      |                |                |           |
 | 프로젝트 조회                                          | 총 10m         | 10m            |           |
 | - useFetch 구현 (기존에 작성해둔 코드 사용)            | -              | -              |           |
