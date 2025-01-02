@@ -38,13 +38,23 @@ export const useFetch = <ResultType>({
     throw error;
   }
 
+  if (!enabled) {
+    return {
+      data: undefined,
+      isLoading: false,
+      isEnabled: false,
+    } as const;
+  }
+
   return fetchResult === undefined
     ? ({
         data: undefined,
         isLoading: true,
+        isEnabled: true,
       } as const)
     : ({
         data: fetchResult,
         isLoading: false,
+        isEnabled: true,
       } as const);
 };
