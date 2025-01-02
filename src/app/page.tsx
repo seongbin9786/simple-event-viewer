@@ -7,9 +7,10 @@ import { EventService } from "@buf/alignai_frontend-challenge-datetz.connectrpc_
 import { createClient } from "@connectrpc/connect";
 import { createConnectTransport } from "@connectrpc/connect-web";
 
-import { useFetch } from "@/utils/hooks";
+import { useFetch, useTokenPaginatedFetch } from "@/utils/hooks";
 
 import { EventTable, EventViewerLayout, ProjectSelect } from "./modules";
+import { PaginatedEventList } from "./modules/PaginatedEventList";
 
 const transport = createConnectTransport({
   baseUrl:
@@ -18,12 +19,18 @@ const transport = createConnectTransport({
 
 const client = createClient(EventService, transport);
 
+const EVENTS_PAGE_SIZE = 15;
+
 export default function EventViewerPage() {
   const [selectedProject, setSelectedProject] = useState<Project | undefined>(
     undefined,
   );
 
-  const { data: projects, isLoading: isProjectLoading } = useFetch({
+  const {
+    data: projects,
+    isLoading: isProjectLoading,
+    isEnabled: isProjectEnabled,
+  } = useFetch({
     fetchFn: async () => {
       const result = await client.listProjects({});
       return result.projects;
@@ -31,21 +38,77 @@ export default function EventViewerPage() {
     deps: [],
   });
 
-  const { data: listEventsResponse } = useFetch({
+  const [currentPage, setCurrentPage] = useState(1);
+
+  console.log("currentPage:", currentPage);
+
+  const {
+    data: listEventsResponse,
+    isLoading: isEventsLoading,
+    isEnabled: isEventsEnabled,
+    totalPages: totalEventPages,
+  } = useTokenPaginatedFetch({
     enabled: !!selectedProject,
-    fetchFn: () =>
-      client.listEvents({
+    pageSize: EVENTS_PAGE_SIZE,
+    currentPage,
+    fetchFn: async (nextPageToken) => {
+      const response = await client.listEvents({
         projectId: selectedProject?.id,
-      }),
+        pageToken: nextPageToken,
+      });
+
+      console.log("from server:", response);
+      console.log("from server - next token:", response.nextPageToken);
+
+      const { events, totalSize } = response;
+      return {
+        data: {
+          events,
+          totalSize,
+        },
+        totalLength: response.totalSize,
+        pageToken: response.nextPageToken,
+      };
+    },
     deps: [selectedProject],
   });
 
-  if (isProjectLoading) {
-    return <div>Loading...</div>;
+  if (!isProjectEnabled || isProjectLoading) {
+    return <div>Loading projects...</div>;
   }
 
   console.log("projects:", projects);
-  console.log("projects:", listEventsResponse);
+
+  if (!selectedProject || !isEventsEnabled || isEventsLoading) {
+    return (
+      <EventViewerLayout
+        projectSelect={
+          <ProjectSelect
+            projectList={projects}
+            selectedProject={selectedProject}
+            onSelect={setSelectedProject}
+          />
+        }
+        dateRangePicker={"(dateRangePicker)"}
+        eventTable={"Please choose a project to see events."}
+      />
+    );
+  }
+
+  const paginatedEventList: PaginatedEventList = {
+    project: selectedProject,
+    events: listEventsResponse.events,
+    pageSize: EVENTS_PAGE_SIZE,
+    currentPage,
+    hasNextPage: currentPage < totalEventPages,
+    goToPrevPage: () => setCurrentPage(Math.max(currentPage - 1, 1)),
+    goToNextPage: () =>
+      setCurrentPage(Math.min(currentPage + 1, totalEventPages)),
+  };
+
+  console.log("paginatedEventList:", paginatedEventList);
+  console.log("totalEventPages:", totalEventPages);
+  console.log("hasNextPage:", currentPage === totalEventPages);
 
   return (
     <EventViewerLayout
@@ -57,12 +120,7 @@ export default function EventViewerPage() {
         />
       }
       dateRangePicker={"(dateRangePicker)"}
-      eventTable={
-        <EventTable
-          events={listEventsResponse}
-          selectedProject={selectedProject}
-        />
-      }
+      eventTable={<EventTable eventList={paginatedEventList} />}
     />
   );
 }
