@@ -8,6 +8,18 @@ importers:
 
   .:
     dependencies:
+      '@buf/alignai_frontend-challenge-datetz.bufbuild_es':
+        specifier: ^1.6.0-20241219080248-3c3bb9f9b2aa.2
+        version: 1.6.0-20241219080248-3c3bb9f9b2aa.2(@bufbuild/protobuf@1.10.0)
+      '@buf/alignai_frontend-challenge-datetz.connectrpc_es':
+        specifier: ^1.6.1-20241219080248-3c3bb9f9b2aa.2
+        version: 1.6.1-20241219080248-3c3bb9f9b2aa.2(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.0))
+      '@connectrpc/connect':
+        specifier: ^1.6.1
+        version: 1.6.1(@bufbuild/protobuf@1.10.0)
+      '@connectrpc/connect-web':
+        specifier: ^1.6.1
+        version: 1.6.1(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.0))
       class-variance-authority:
         specifier: ^0.7.1
         version: 0.7.1
@@ -123,6 +135,50 @@ packages:
   '@babel/types@7.26.3':
     resolution: {integrity: sha512-vN5p+1kl59GVKMvTHt55NzzmYVxprfJD+ql7U9NFIfKCBkYE55LYtS+WtPlaYOyzydrKI8Nezd+aZextrd+FMA==}
     engines: {node: '>=6.9.0'}
+
+  '@buf/alignai_frontend-challenge-datetz.bufbuild_es@1.10.0-20241219080248-3c3bb9f9b2aa.1':
+    resolution: {tarball: https://buf.build/gen/npm/v1/@buf/alignai_frontend-challenge-datetz.bufbuild_es/-/alignai_frontend-challenge-datetz.bufbuild_es-1.10.0-20241219080248-3c3bb9f9b2aa.1.tgz}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.10.0
+
+  '@buf/alignai_frontend-challenge-datetz.bufbuild_es@1.6.0-20241219080248-3c3bb9f9b2aa.2':
+    resolution: {tarball: https://buf.build/gen/npm/v1/@buf/alignai_frontend-challenge-datetz.bufbuild_es/-/alignai_frontend-challenge-datetz.bufbuild_es-1.6.0-20241219080248-3c3bb9f9b2aa.2.tgz}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.6.0
+
+  '@buf/alignai_frontend-challenge-datetz.connectrpc_es@1.6.1-20241219080248-3c3bb9f9b2aa.2':
+    resolution: {tarball: https://buf.build/gen/npm/v1/@buf/alignai_frontend-challenge-datetz.connectrpc_es/-/alignai_frontend-challenge-datetz.connectrpc_es-1.6.1-20241219080248-3c3bb9f9b2aa.2.tgz}
+    peerDependencies:
+      '@connectrpc/connect': ^1.6.1
+
+  '@buf/googleapis_googleapis.bufbuild_es@1.10.0-20241206200715-acd896313c55.1':
+    resolution: {tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.bufbuild_es/-/googleapis_googleapis.bufbuild_es-1.10.0-20241206200715-acd896313c55.1.tgz}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.10.0
+
+  '@buf/googleapis_googleapis.bufbuild_es@1.6.0-20241206200715-acd896313c55.2':
+    resolution: {tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.bufbuild_es/-/googleapis_googleapis.bufbuild_es-1.6.0-20241206200715-acd896313c55.2.tgz}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.6.0
+
+  '@buf/googleapis_googleapis.connectrpc_es@1.6.1-20241206200715-acd896313c55.2':
+    resolution: {tarball: https://buf.build/gen/npm/v1/@buf/googleapis_googleapis.connectrpc_es/-/googleapis_googleapis.connectrpc_es-1.6.1-20241206200715-acd896313c55.2.tgz}
+    peerDependencies:
+      '@connectrpc/connect': ^1.6.1
+
+  '@bufbuild/protobuf@1.10.0':
+    resolution: {integrity: sha512-QDdVFLoN93Zjg36NoQPZfsVH9tZew7wKDKyV5qRdj8ntT4wQCOradQjRaTdwMhWUYsgKsvCINKKm87FdEk96Ag==}
+
+  '@connectrpc/connect-web@1.6.1':
+    resolution: {integrity: sha512-GVfxQOmt3TtgTaKeXLS/EA2IHa3nHxwe2BCHT7X0Q/0hohM+nP5DDnIItGEjGrGdt3LTTqWqE4s70N4h+qIMlQ==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.10.0
+      '@connectrpc/connect': 1.6.1
+
+  '@connectrpc/connect@1.6.1':
+    resolution: {integrity: sha512-KchMDNtU4CDTdkyf0qG7ugJ6qHTOR/aI7XebYn3OTCNagaDYWiZUVKgRgwH79yeMkpNgvEUaXSK7wKjaBK9b/Q==}
+    peerDependencies:
+      '@bufbuild/protobuf': ^1.10.0
 
   '@emnapi/runtime@1.3.1':
     resolution: {integrity: sha512-kEBmG8KyqtxJZv+ygbEim+KCGtIq1fC22Ms3S4ziXmYKm8uyoLX0MHONVKwp+9opg390VaKRNt4a7A9NwmpNhw==}
@@ -1939,6 +1995,50 @@ snapshots:
     dependencies:
       '@babel/helper-string-parser': 7.25.9
       '@babel/helper-validator-identifier': 7.25.9
+
+  '@buf/alignai_frontend-challenge-datetz.bufbuild_es@1.10.0-20241219080248-3c3bb9f9b2aa.1(@bufbuild/protobuf@1.10.0)':
+    dependencies:
+      '@buf/googleapis_googleapis.bufbuild_es': 1.10.0-20241206200715-acd896313c55.1(@bufbuild/protobuf@1.10.0)
+      '@bufbuild/protobuf': 1.10.0
+
+  '@buf/alignai_frontend-challenge-datetz.bufbuild_es@1.6.0-20241219080248-3c3bb9f9b2aa.2(@bufbuild/protobuf@1.10.0)':
+    dependencies:
+      '@buf/googleapis_googleapis.bufbuild_es': 1.6.0-20241206200715-acd896313c55.2(@bufbuild/protobuf@1.10.0)
+      '@bufbuild/protobuf': 1.10.0
+
+  '@buf/alignai_frontend-challenge-datetz.connectrpc_es@1.6.1-20241219080248-3c3bb9f9b2aa.2(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.0))':
+    dependencies:
+      '@buf/alignai_frontend-challenge-datetz.bufbuild_es': 1.10.0-20241219080248-3c3bb9f9b2aa.1(@bufbuild/protobuf@1.10.0)
+      '@buf/googleapis_googleapis.connectrpc_es': 1.6.1-20241206200715-acd896313c55.2(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.0))
+      '@connectrpc/connect': 1.6.1(@bufbuild/protobuf@1.10.0)
+    transitivePeerDependencies:
+      - '@bufbuild/protobuf'
+
+  '@buf/googleapis_googleapis.bufbuild_es@1.10.0-20241206200715-acd896313c55.1(@bufbuild/protobuf@1.10.0)':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.0
+
+  '@buf/googleapis_googleapis.bufbuild_es@1.6.0-20241206200715-acd896313c55.2(@bufbuild/protobuf@1.10.0)':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.0
+
+  '@buf/googleapis_googleapis.connectrpc_es@1.6.1-20241206200715-acd896313c55.2(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.0))':
+    dependencies:
+      '@buf/googleapis_googleapis.bufbuild_es': 1.10.0-20241206200715-acd896313c55.1(@bufbuild/protobuf@1.10.0)
+      '@connectrpc/connect': 1.6.1(@bufbuild/protobuf@1.10.0)
+    transitivePeerDependencies:
+      - '@bufbuild/protobuf'
+
+  '@bufbuild/protobuf@1.10.0': {}
+
+  '@connectrpc/connect-web@1.6.1(@bufbuild/protobuf@1.10.0)(@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.0))':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.0
+      '@connectrpc/connect': 1.6.1(@bufbuild/protobuf@1.10.0)
+
+  '@connectrpc/connect@1.6.1(@bufbuild/protobuf@1.10.0)':
+    dependencies:
+      '@bufbuild/protobuf': 1.10.0
 
   '@emnapi/runtime@1.3.1':
     dependencies:

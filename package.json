@@ -9,6 +9,10 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@buf/alignai_frontend-challenge-datetz.bufbuild_es": "^1.6.0-20241219080248-3c3bb9f9b2aa.2",
+    "@buf/alignai_frontend-challenge-datetz.connectrpc_es": "^1.6.1-20241219080248-3c3bb9f9b2aa.2",
+    "@connectrpc/connect": "^1.6.1",
+    "@connectrpc/connect-web": "^1.6.1",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "lucide-react": "^0.469.0",
